@@ -1,0 +1,89 @@
+components:
+  schemas:
+    PostSatellite:
+      type: object
+      additionalProperties: false
+      required:
+        - satelliteName
+      properties:
+        satelliteName:
+          type: string
+    
+    GetSatellites:
+      type: array
+      items:
+        $ref: '#/components/schemas/PostSatellite'
+    
+    UserRegister:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+    
+    UserLogin:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+    
+    Message:
+      type: object
+      properties:
+        message:
+          type: string
+
+
+
+  responses:
+    DefaultErrorResponse:
+      description: Default error response
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - message
+            properties:
+              message:
+                type: string
+    
+    UserLoginResponse:
+      description: Login successful
+      headers:
+        Set-Cookie:
+          schema:
+            type: string
+            example: connect.sid=s%3Ak3f; Path=/; HttpOnly
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Message'
+    
+    UserLogoutResponse:
+      description: Logout successful
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Message'
+      
+
+
+  parameters:
+    Cookie:
+      in: header
+      name: Cookie
+      schema:
+        type: string
+        example: connect.sid=s%3Ak3f; Path=/; HttpOnly
+      description: Session cookie
+          
