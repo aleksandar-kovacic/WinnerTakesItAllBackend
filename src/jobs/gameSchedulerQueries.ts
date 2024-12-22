@@ -59,7 +59,7 @@ export async function startNewGameBy(){
             isActive: true,
             prizePool: 0,
             startDate: startDate,
-            endDate: DATE_ADD(startDate, 7, 'day'),
+            endDate: DATE_TIMESTAMP(DATE_ADD(startDate, 7, 'day')),
             winner: null
         } IN games`);
     }
