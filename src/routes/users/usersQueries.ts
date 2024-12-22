@@ -22,7 +22,8 @@ export async function createNewUserQuery(
         INSERT {
             username: @username,
             email: @email,
-            passwordHashed: @hashedPassword
+            passwordHashed: @hashedPassword,
+            verified: false
         } IN users
         `, {username, email, hashedPassword});
 }

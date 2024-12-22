@@ -23,3 +23,22 @@ declare module 'express-session' {
       userKey: string;
     }
   }
+
+// Redis helper functions: extract session ID from redis database
+function extractSessionId(cookie: string): string {
+    const match = cookie.match(/connect\.sid=s%3A([^\.]+)\./);
+    return match ? match[1] : '';
+}
+
+// Redis helper functions: get user key from session
+export async function getUserKeyFromSession(cookie: string): Promise<string> {
+    const sessionId = extractSessionId(cookie);
+
+    const redisObject = await redisClient.get(`WinnerTakesItAll:${sessionId}`);
+    if (redisObject) {
+        const userKey = JSON.parse(redisObject).userKey;
+        return userKey;
+    } else {
+        throw new Error('Redis object is null');
+    }
+}

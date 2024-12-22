@@ -19,7 +19,7 @@ import * as OpenApiValidator from 'express-openapi-validator';
 // Routes
 import indexRouter from './routes/index';
 import usersRouter from './routes/users/users';
-import satellitesRouter from './routes/satellites/satellites';
+import paymentsRouter from './routes/payments/payments';
 
 
 const app = express();
@@ -69,7 +69,7 @@ app.use(
 // Register routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/satellites', satellitesRouter);
+app.use('/payments', paymentsRouter);
 
 // OpenAPI Validator error handler
 app.use((err:any, req: Request, res: Response, next: NextFunction) => {

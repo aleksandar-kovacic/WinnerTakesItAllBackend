@@ -12,12 +12,12 @@
     }
   ],
   "paths": {
-    "/satellites": {
+    "/payments/pay": {
       "post": {
-        "summary": "Post satellite data",
-        "description": "Posts satellite data to the database. Requires authentication.",
+        "summary": "Make a payment and participate in the game",
+        "description": "Allows an authenticated user to make a payment and participate in the active game.",
         "tags": [
-          "Satellite"
+          "Payments"
         ],
         "parameters": [
           {
@@ -29,38 +29,18 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PostSatellite"
+                "$ref": "#/components/schemas/PaymentMethod"
               }
             }
           }
         },
         "responses": {
-          "204": {
-            "description": "Satellite data posted successfully"
-          },
-          "default": {
-            "$ref": "#/components/responses/DefaultErrorResponse"
-          }
-        }
-      },
-      "get": {
-        "summary": "Get satellite data",
-        "description": "Gets the data of all satellites as an array for the authenticated user.",
-        "tags": [
-          "Satellite"
-        ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/Cookie"
-          }
-        ],
-        "responses": {
           "200": {
-            "description": "Satellite data retrieved successfully",
+            "description": "Payment successful and participation recorded",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetSatellites"
+                  "$ref": "#/components/schemas/Message"
                 }
               }
             }
@@ -150,24 +130,6 @@
   },
   "components": {
     "schemas": {
-      "PostSatellite": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "satelliteName"
-        ],
-        "properties": {
-          "satelliteName": {
-            "type": "string"
-          }
-        }
-      },
-      "GetSatellites": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/PostSatellite"
-        }
-      },
       "UserRegister": {
         "type": "object",
         "properties": {
@@ -193,6 +155,14 @@
           "password": {
             "type": "string",
             "format": "password"
+          }
+        }
+      },
+      "PaymentMethod": {
+        "type": "object",
+        "properties": {
+          "paymentMethod": {
+            "type": "string"
           }
         }
       },

@@ -1,19 +1,5 @@
 components:
   schemas:
-    PostSatellite:
-      type: object
-      additionalProperties: false
-      required:
-        - satelliteName
-      properties:
-        satelliteName:
-          type: string
-    
-    GetSatellites:
-      type: array
-      items:
-        $ref: '#/components/schemas/PostSatellite'
-    
     UserRegister:
       type: object
       properties:
@@ -34,6 +20,12 @@ components:
         password:
           type: string
           format: password
+    
+    PaymentMethod:
+      type: object
+      properties:
+        paymentMethod:
+          type: string
     
     Message:
       type: object
