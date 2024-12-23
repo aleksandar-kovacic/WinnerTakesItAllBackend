@@ -5,7 +5,7 @@
   "scripts": {
     "prestart": "ts-node ./src/config/checkEnv.ts",
     "start": "tsc && node ./dist/server.js",
-    "test": "jest"
+    "test": "jest -i"
   },
   "dependencies": {
     "@types/arangodb": "^3.5.23",

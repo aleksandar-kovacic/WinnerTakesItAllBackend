@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { addUserToGame, alreadyPayed } from './paymentsQueries';
+import { addUserToGame, alreadyPayedBy, isVerifiedBy } from './paymentsQueries';
 import { isAuthenticated } from '../../middleware/authMiddleware';
 
 const router = express.Router();
@@ -39,17 +39,21 @@ router.post('/pay', isAuthenticated, async (req: Request, res: Response) => {
     }
 
     // TODO: Check that the user is not in OASIS (i.e. banned)
-    // TODO: Check that user if verified (i.e. age and personal information)
+    const isVerified = await isVerifiedBy(userKey);
+    if(!isVerified) {
+        res.status(400).json({ message: 'User is not verified' });
+        return;
+    }
 
     // Check if user has already paid
-    const alreadyPaid = await alreadyPayed(userKey);
+    const alreadyPaid = await alreadyPayedBy(userKey);
     if(alreadyPaid) {
         res.status(400).json({ message: 'User has already paid' });
         return;
     }
 
     // TODO : Implement payment logic here (e.g., PayPal, Apple Pay)
-    const paymentSuccessful = true; // Replace with actual payment logic
+    const paymentSuccessful = await thirdPartyPaymentProcess(userKey, paymentMethod);
 
     if (paymentSuccessful) {
         await addUserToGame(userKey, 1);
@@ -58,5 +62,9 @@ router.post('/pay', isAuthenticated, async (req: Request, res: Response) => {
         res.status(400).json({ message: 'Payment failed' });
     }
 });
+
+async function thirdPartyPaymentProcess(userKey: string, paymentMethod: string): Promise<boolean> {
+    return true;
+}
 
 export default router;

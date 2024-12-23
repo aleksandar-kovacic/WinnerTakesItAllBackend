@@ -20,13 +20,22 @@ export async function addUserToGame(userKey: string, amount: number) {
     `, { userKey, amount });
 }
 
-export async function alreadyPayed(userKey: string) {
+export async function alreadyPayedBy(userKey: string) {
     const cursor: ArrayCursor<boolean> = await db.query(/*aql*/`
         LET user = DOCUMENT('users', @userKey)
         LET game = (FOR game IN OUTBOUND user users2games
             FILTER game.isActive == true
             RETURN game)
         RETURN LENGTH(game) > 0 ? true : false
+    `, { userKey });
+    return cursor.next();
+}
+
+export async function isVerifiedBy(userKey: string) {
+    const cursor: ArrayCursor<boolean> = await db.query(/*aql*/`
+        LET user = DOCUMENT('users', @userKey)
+        FILTER ASSERT(user != NULL, '404_USER_NOT_FOUND')
+        RETURN user.verified
     `, { userKey });
     return cursor.next();
 }

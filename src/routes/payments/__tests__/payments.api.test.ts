@@ -3,6 +3,8 @@ import app from '../../../app';
 import { db } from "../../../database/arango";
 import { ArrayCursor } from "arangojs/cursor";
 import { getUserKeyFromSession } from '../../../database/redis';
+import fs from 'fs';
+import path from 'path';
 
 const date = Date.now();
 
@@ -24,16 +26,25 @@ describe('test payment functionality', () => {
                 username: `testUser-${date}`,
                 password: 'Passw0rd!',
             });
-
         expect(responseLogin.status).toBe(200);
         expect(responseLogin.headers['set-cookie'][0].length).toBeGreaterThan(1);
+
+        //Convert jpg to base64
+        const idFrontImage = fs.readFileSync(path.resolve(__dirname, '../../../../test_utils/idFrontImageExample.jpg')).toString('base64');
+        const personImage = fs.readFileSync(path.resolve(__dirname, '../../../../test_utils/personImageExample.jpg')).toString('base64');
+
+        //Verify the user
+        const verification = await request(app)
+        .post('/verification/verify')
+        .send({ idFrontImage: idFrontImage, personImage: personImage })
+        .set('Cookie', responseLogin.headers['set-cookie'][0]);
+        expect(verification.status).toBe(204);
         
         // Let the user pay so that he participates in the game 
         const payment = await request(app)
             .post('/payments/pay')
             .send({ paymentMethod: 'Paypal' })
             .set('Cookie', responseLogin.headers['set-cookie']);
-
         expect(payment.status).toBe(200);
         
         // Get the user key from the session cookie and check if the new user is connected to the active game.

@@ -20,6 +20,7 @@ import * as OpenApiValidator from 'express-openapi-validator';
 import indexRouter from './routes/index';
 import usersRouter from './routes/users/users';
 import paymentsRouter from './routes/payments/payments';
+import verificationRouter from './routes/verification/verification';
 
 
 const app = express();
@@ -49,7 +50,7 @@ app.use(
 );
 
 app.use(logger('dev'));
-app.use(express.json());
+app.use(express.json({limit: '5mb'}));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../public'))); //favicon.ico
@@ -70,6 +71,7 @@ app.use(
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/payments', paymentsRouter);
+app.use('/verification', verificationRouter);
 
 // OpenAPI Validator error handler
 app.use((err:any, req: Request, res: Response, next: NextFunction) => {
