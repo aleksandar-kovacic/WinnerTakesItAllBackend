@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import { addUserToGame, alreadyPayedBy, isVerifiedBy } from './paymentsQueries';
 import { isAuthenticated } from '../../middleware/authMiddleware';
+import { isBannedBy } from '../ban/oasisBanQueries';
 
 const router = express.Router();
 
@@ -38,10 +39,16 @@ router.post('/pay', isAuthenticated, async (req: Request, res: Response) => {
         return;
     }
 
-    // TODO: Check that the user is not in OASIS (i.e. banned)
     const isVerified = await isVerifiedBy(userKey);
     if(!isVerified) {
         res.status(400).json({ message: 'User is not verified' });
+        return;
+    }
+
+    //TODO: Currently the ban state of a player fetched from the arango database. Replace this query if OASIS or other ban system is implemented.
+    const isBanned = await isBannedBy(userKey);
+    if(isBanned) {
+        res.status(400).json({ message: 'User is banned' });
         return;
     }
 

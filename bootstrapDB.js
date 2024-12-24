@@ -21,7 +21,8 @@ export async function addGame() {
             prizePool: 3,
             startDate: startDate,
             endDate: DATE_TIMESTAMP(DATE_ADD(startDate, 7, 'day')),
-            winner: null
+            winner: null,
+            banned: false //TODO: Currently the ban state of a player is handled in the arango database. Replace this query if OASIS or other ban system is implemented.
         } INTO games
         RETURN NEW._key
     `);

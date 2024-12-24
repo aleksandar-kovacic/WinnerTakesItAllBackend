@@ -23,7 +23,8 @@ export async function createNewUserQuery(
             username: @username,
             email: @email,
             passwordHashed: @hashedPassword,
-            verified: false
+            verified: false,
+            banned: false //TODO: Currently the ban state of a player is handled in the arango database. Delete this field if OASIS or other ban system is implemented.
         } IN users
         `, {username, email, hashedPassword});
 }
