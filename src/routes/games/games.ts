@@ -7,7 +7,7 @@ const router = express.Router();
  * @openapi
  * /games/information:
  *   get:
- *     summary: Get information about the games.
+ *     summary: Get information about the active game.
  *     description: This includes the prize pool and the duration of the game.
  *     tags: [Games]
  *     responses:
