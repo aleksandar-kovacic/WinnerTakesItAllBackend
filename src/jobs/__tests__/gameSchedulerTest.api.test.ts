@@ -82,9 +82,9 @@ describe('Create three users, let them participate in the game and then get the 
 export async function getLatestGamesBy() {
   const cursor: ArrayCursor<Game> = await db.query(/*aql*/`
         FOR game IN games
-            SORT game.startDate DESC
+            SORT game.dateCreated DESC
             LIMIT 2
-            RETURN KEEP(game, '_key', 'isActive', 'prizePool', 'startDate', 'endDate', 'winner')
+            RETURN KEEP(game, '_key', 'isActive', 'prizePool', 'startDate', 'endDate', 'winner', 'dateCreated')
         `);
   return cursor.all();
 }

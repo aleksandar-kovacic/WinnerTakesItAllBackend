@@ -52,14 +52,14 @@ export async function markActiveGameInactiveBy(
         `, { gameKey });
     }
 
-export async function startNewGameBy(){
+export async function startNewGameBy(startDate: number, endDate: number){
     await db.query(/*aql*/`
-        LET startDate = DATE_NOW()
         INSERT {
             isActive: true,
             prizePool: 0,
-            startDate: startDate,
-            endDate: DATE_TIMESTAMP(DATE_ADD(startDate, 7, 'day')),
+            startDate: @startDate,
+            endDate: @endDate,
+            dateCreated: DATE_NOW(),
             winner: null
-        } IN games`);
+        } IN games`, {startDate, endDate});
     }

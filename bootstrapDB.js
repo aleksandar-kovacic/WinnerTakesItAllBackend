@@ -3,29 +3,50 @@ dotenv.config();
 import { db } from "./dist/database/arango.js";
 import bcrypt from 'bcrypt';
 
+// This function calculates the start date of the game. Based on the current date, it calculates the last scheduled day of the game.
+export const getStartDateOfGame = (dateNow) => {
+    const dayOfWeek = parseInt(String(process.env.GAME_START_DAY));
+    const hourOfDay = parseInt(String(process.env.GAME_START_HOUR));
+    const lastScheduledDay = new Date(dateNow);
+    lastScheduledDay.setDate(dateNow.getDate() - (dateNow.getDay() + 7 - dayOfWeek) % 7);
+    lastScheduledDay.setHours(hourOfDay, 0, 0, 0);
+    return lastScheduledDay.getTime();
+};
+
+// This function calculates the end date of the game. Based on the current date, it calculates the next scheduled day of the game.
+export const getEndDateOfGame = (dateNow) => {
+    const dayOfWeek = parseInt(String(process.env.GAME_START_DAY));
+    const hourOfDay = parseInt(String(process.env.GAME_START_HOUR));
+    const nextScheduledDay = new Date(dateNow);
+    nextScheduledDay.setDate(dateNow.getDate() + (dayOfWeek - dateNow.getDay() + 7) % 7);
+    nextScheduledDay.setHours(hourOfDay, 0, 0, 0);
+    return nextScheduledDay.getTime();
+};
+
 async function bootstrapDB() {
     await db.createCollection("users");
     await db.createCollection("games");
     await db.createEdgeCollection("users2games");
 
-    const insertedGameKey = await addGame();
+    const now = new Date();
+    const insertedGameKey = await addGame(getStartDateOfGame(now), getEndDateOfGame(now));
     const insertedUsersKeys = await addUserToGame();
     await addEdgeUsers2Games(insertedGameKey, insertedUsersKeys);
 }
 
-export async function addGame() {
+export async function addGame(startDateOfGame, endDateOfGame) {
     const cursor = await db.query(/*aql*/`
-        LET startDate = DATE_NOW()
         INSERT {
             isActive: true,
             prizePool: 3,
-            startDate: startDate,
-            endDate: DATE_TIMESTAMP(DATE_ADD(startDate, 7, 'day')),
+            startDate: @startDateOfGame,
+            endDate: @endDateOfGame,
+            dateCreated: DATE_NOW(),
             winner: null,
             banned: false //TODO: Currently the ban state of a player is handled in the arango database. Replace this query if OASIS or other ban system is implemented.
         } INTO games
         RETURN NEW._key
-    `);
+    `, {startDateOfGame, endDateOfGame});
     return cursor.next();
 }
 

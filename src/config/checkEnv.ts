@@ -9,7 +9,10 @@ const requiredEnvVars = [
     'ARANGODB_PASSWORD',
     'REDIS_HOST',
     'REDIS_PORT',
-    'SESSION_SECRET'
+    'SESSION_SECRET',
+    'BOOTSTRAPED_USERS_PASSWORD',
+    'GAME_START_DAY',
+    'GAME_START_HOUR'
 ];
 
 const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar]);

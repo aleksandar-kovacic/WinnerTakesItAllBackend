@@ -92,6 +92,22 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Message'
+    
+    GameInformationResponse:
+      description: Game information
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - prizePool
+              - endDate
+            properties:
+              prizePool:
+                type: number
+              endDate:
+                type: number
       
 
 

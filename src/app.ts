@@ -22,6 +22,7 @@ import usersRouter from './routes/users/users';
 import paymentsRouter from './routes/payments/payments';
 import verificationRouter from './routes/verification/verification';
 import oasisBanRouter from './routes/ban/oasisBan';
+import gamesRouter from './routes/games/games';
 
 
 const app = express();
@@ -74,6 +75,7 @@ app.use('/users', usersRouter);
 app.use('/payments', paymentsRouter);
 app.use('/verification', verificationRouter);
 app.use('/ban', oasisBanRouter);
+app.use('/games', gamesRouter);
 
 // OpenAPI Validator error handler
 app.use((err:any, req: Request, res: Response, next: NextFunction) => {
