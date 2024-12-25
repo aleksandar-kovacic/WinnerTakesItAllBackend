@@ -108,6 +108,19 @@ components:
                 type: number
               endDate:
                 type: number
+    
+    UserAuthStatusResponse:
+      description: User authentication status
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - loggedIn
+            properties:
+              loggedIn:
+                type: boolean
       
 
 

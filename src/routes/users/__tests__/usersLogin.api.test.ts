@@ -25,6 +25,13 @@ describe('POST /users/login', () => {
         expect(response.status).toBe(200);
         expect(response.body.message).toBe('Login successful');
         expect(response.headers['set-cookie'][0].length).toBeGreaterThan(1);
+
+        // Check if the user is logged in
+        const loggedInResponse = await request(app)
+            .get('/users/auth/status')
+            .set('Cookie', response.headers['set-cookie'][0]);
+        expect(loggedInResponse.status).toBe(200);
+        expect(loggedInResponse.body.loggedIn).toBe(true);
     });
 
     it('should return 400 if required fields are missing', async () => {
@@ -48,5 +55,13 @@ describe('POST /users/login', () => {
 
         expect(response.status).toBe(401);
         expect(response.body.message).toBe('Invalid username or password');
+    });
+
+    it('check if /auth/status returns false if user is not logged in', async () => {
+        const response = await request(app)
+            .get('/users/auth/status');
+
+        expect(response.status).toBe(200);
+        expect(response.body.loggedIn).toBe(false);
     });
 });

@@ -208,6 +208,28 @@
         }
       }
     },
+    "/users/auth/status": {
+      "get": {
+        "summary": "Check if the user is logged in",
+        "description": "Checks if the user is logged in by checking the session for the frontend. Returns true if the user is logged in.",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Cookie"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/UserAuthStatusResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/DefaultErrorResponse"
+          }
+        }
+      }
+    },
     "/verification/verify": {
       "post": {
         "summary": "Verify a user's identity",
@@ -385,6 +407,25 @@
                 },
                 "endDate": {
                   "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "UserAuthStatusResponse": {
+        "description": "User authentication status",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "loggedIn"
+              ],
+              "properties": {
+                "loggedIn": {
+                  "type": "boolean"
                 }
               }
             }

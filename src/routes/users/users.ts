@@ -120,4 +120,27 @@ router.post('/logout', (req: Request, res: Response) => {
   });
 });
 
+/**
+ * @openapi
+ * /users/auth/status:
+ *   get:
+ *     summary: Check if the user is logged in
+ *     description: Checks if the user is logged in by checking the session for the frontend. Returns true if the user is logged in.
+ *     tags: [Users]
+ *     parameters:
+ *       - $ref: '#/components/parameters/Cookie'
+ *     responses:
+ *       200:
+ *         $ref: '#/components/responses/UserAuthStatusResponse'
+ *       default:
+ *         $ref: '#/components/responses/DefaultErrorResponse'
+ */
+router.get('/auth/status', (req: Request, res: Response) => {
+  if (req.session.userKey) {
+    res.status(200).json({ loggedIn: true });
+  } else {
+    res.status(200).json({ loggedIn: false });
+  }
+});
+
 export default router;
