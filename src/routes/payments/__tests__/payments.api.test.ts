@@ -5,11 +5,15 @@ import { ArrayCursor } from "arangojs/cursor";
 import { getUserKeyFromSession } from '../../../database/redis';
 import fs from 'fs';
 import path from 'path';
+import { payoutAndStartNewGame } from '../../../jobs/gameScheduler';
 
 const date = Date.now();
 
 describe('test payment functionality', () => {
     it('register and login user and pay for a game', async () => {
+        // Close the current game and start a new one
+        await payoutAndStartNewGame();
+        
         // First, register the user
         await request(app)
             .post('/users/register')
@@ -51,6 +55,9 @@ describe('test payment functionality', () => {
         const userKey = await getUserKeyFromSession(responseLogin.headers['set-cookie'][0]);
         const isUserConnectedToActiveGame = await userConnectedToActiveGame(userKey);
         expect(isUserConnectedToActiveGame).toBe(true);
+
+        // Close the current game and start a new one
+        await payoutAndStartNewGame();
     });
 });
 

@@ -32,10 +32,13 @@ WinnerTakesItAll
    ```
 
 ## Bootstrap Database
-Run this command to setup the initial database structure and values. This includes the collections "users" and "games" and the edge collection "users2games". "users" is filled with three initial users (bootstrapUser1, bootstrapUser2 and bootstrapUser3). "games" is filled with the first active game. "users2games" represents the participation of the three users in the game by connecting every user to the game.
+Run this command to setup the initial database structure and values. This includes the collections "users" and "games" and the edge collection "users2games". "users" is filled with three initial users (bootstrapUser1, bootstrapUser2 and bootstrapUser3). "games" is filled with the first active game. "users2games" represents the participation of the three users in the game by connecting every user to the game (this represents that every user payed and is now participating in the game).
 
 Set the password of the users in the .env file. Make sure that the database you provided in the .env file exists in the ArangoDB instance.
+
+Make sure that you compile the TypeScript files to JavaScript files before running the database bootstrap script:
    ```
+   npm run build
    node node bootstrapDB.js
    ```
 

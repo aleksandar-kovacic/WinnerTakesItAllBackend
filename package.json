@@ -5,6 +5,7 @@
   "scripts": {
     "prestart": "ts-node ./src/config/checkEnv.ts",
     "start": "tsc && node ./dist/server.js",
+    "build": "tsc",
     "test": "jest -i"
   },
   "dependencies": {

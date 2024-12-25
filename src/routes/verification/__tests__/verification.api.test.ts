@@ -5,11 +5,15 @@ import { ArrayCursor } from "arangojs/cursor";
 import { getUserKeyFromSession } from '../../../database/redis';
 import fs from 'fs';
 import path from 'path';
+import { payoutAndStartNewGame } from '../../../jobs/gameScheduler';
 
 const date = Date.now();
 
 describe('test verification functionality', () => {
     it('register and login user and verify user', async () => {
+        // Close the current game and start a new one
+        await payoutAndStartNewGame();
+
         // First, register the user
         await request(app)
             .post('/users/register')
@@ -46,6 +50,9 @@ describe('test verification functionality', () => {
         expect(verification.status).toBe(204);
 
         expect(await isUserVerified(userKey)).toBe(true);
+
+        // Close the current game and start a new one
+        await payoutAndStartNewGame();
     });
 });
 

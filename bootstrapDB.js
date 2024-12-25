@@ -2,26 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import { db } from "./dist/database/arango.js";
 import bcrypt from 'bcrypt';
-
-// This function calculates the start date of the game. Based on the current date, it calculates the last scheduled day of the game.
-export const getStartDateOfGame = (dateNow) => {
-    const dayOfWeek = parseInt(String(process.env.GAME_START_DAY));
-    const hourOfDay = parseInt(String(process.env.GAME_START_HOUR));
-    const lastScheduledDay = new Date(dateNow);
-    lastScheduledDay.setDate(dateNow.getDate() - (dateNow.getDay() + 7 - dayOfWeek) % 7);
-    lastScheduledDay.setHours(hourOfDay, 0, 0, 0);
-    return lastScheduledDay.getTime();
-};
-
-// This function calculates the end date of the game. Based on the current date, it calculates the next scheduled day of the game.
-export const getEndDateOfGame = (dateNow) => {
-    const dayOfWeek = parseInt(String(process.env.GAME_START_DAY));
-    const hourOfDay = parseInt(String(process.env.GAME_START_HOUR));
-    const nextScheduledDay = new Date(dateNow);
-    nextScheduledDay.setDate(dateNow.getDate() + (dayOfWeek - dateNow.getDay() + 7) % 7);
-    nextScheduledDay.setHours(hourOfDay, 0, 0, 0);
-    return nextScheduledDay.getTime();
-};
+import { getStartDateOfGame, getEndDateOfGame } from './dist/config/scheduleTimeOfGame.js';
 
 async function bootstrapDB() {
     await db.createCollection("users");

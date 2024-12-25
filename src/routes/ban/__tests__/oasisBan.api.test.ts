@@ -2,11 +2,15 @@ import request from 'supertest';
 import app from '../../../app';
 import fs from 'fs';
 import path from 'path';
+import { payoutAndStartNewGame } from '../../../jobs/gameScheduler';
 
 const date = Date.now();
 
 describe('test ban functionality', () => {
     it('register and login user and ban user', async () => {
+        // Close the current game and start a new one
+        await payoutAndStartNewGame();
+
         // First, register the user
         await request(app)
             .post('/users/register')
@@ -64,5 +68,8 @@ describe('test ban functionality', () => {
             .send({ paymentMethod: 'Paypal' })
             .set('Cookie', responseLogin.headers['set-cookie'][0]);
         expect(payment2.status).toBe(200);
+
+        // Close the current game and start a new one
+        await payoutAndStartNewGame();
     });
 });

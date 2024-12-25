@@ -29,6 +29,7 @@ export async function getWinnerAndActiveGame() {
                 RETURN user._key
             )
         
+        // Select a random winner from the participants. If there are no participants, the winner is null.
         LET winner = (
             FOR participant IN participants
                 SORT RAND()

@@ -5,6 +5,7 @@ import app from '../../../app';
 import fs from 'fs';
 import path from 'path';
 import { payoutAndStartNewGame } from '../../../jobs/gameScheduler';
+import { getEndDateOfGame } from '../../../config/scheduleTimeOfGame';
 
 const date = Date.now();
 
@@ -58,13 +59,9 @@ describe('Create three users, let them participate in the game and return the ga
     expect(gameInformation.status).toBe(200);
     expect(gameInformation.body.prizePool).toBe(3);
     //Check that the endDate is e.g. next Friday 10pm
-    const nextScheduledDay = new Date();
-    const gameStartDay = parseInt(String(process.env.GAME_START_DAY));
-    const gameStartHour = parseInt(String(process.env.GAME_START_HOUR));
-    nextScheduledDay.setDate(nextScheduledDay.getDate() + (gameStartDay - nextScheduledDay.getDay() + 7) % 7);
-    nextScheduledDay.setHours(gameStartHour, 0, 0, 0);
-    const nextScheduledTime = nextScheduledDay.getTime();
-    expect(gameInformation.body.endDate).toBe(nextScheduledTime);
+    const now = new Date();
+    const endDate = getEndDateOfGame(now)
+    expect(gameInformation.body.endDate).toBe(endDate);
 
     // Close the current game and start a new one
     await payoutAndStartNewGame();
