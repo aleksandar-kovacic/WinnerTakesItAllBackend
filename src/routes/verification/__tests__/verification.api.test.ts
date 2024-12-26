@@ -1,7 +1,5 @@
 import request from 'supertest';
 import app from '../../../app';
-import { db } from "../../../database/arango";
-import { ArrayCursor } from "arangojs/cursor";
 import { getUserKeyFromSession } from '../../../database/redis';
 import fs from 'fs';
 import path from 'path';
@@ -36,7 +34,12 @@ describe('test verification functionality', () => {
         // Get the user key from the session cookie
         const userKey = await getUserKeyFromSession(responseLogin.headers['set-cookie'][0]);
 
-        expect(await isUserVerified(userKey)).toBe(false);
+        // Check that the user is not verified yet.
+        const verificationResponse = await request(app)
+            .get('/verification/status')
+            .set('Cookie', responseLogin.headers['set-cookie'][0]);
+        expect(verificationResponse.status).toBe(200);
+        expect(verificationResponse.body.verified).toBe(false);
 
         //Convert jpg to base64
         const idFrontImage = fs.readFileSync(path.resolve(__dirname, '../../../../test_utils/idFrontImageExample.jpg')).toString('base64');
@@ -49,19 +52,14 @@ describe('test verification functionality', () => {
         .set('Cookie', responseLogin.headers['set-cookie'][0]);
         expect(verification.status).toBe(204);
 
-        expect(await isUserVerified(userKey)).toBe(true);
+        // Check that the user is verified now.
+        const verificationResponse2 = await request(app)
+            .get('/verification/status')
+            .set('Cookie', responseLogin.headers['set-cookie'][0]);
+        expect(verificationResponse2.status).toBe(200);
+        expect(verificationResponse2.body.verified).toBe(true);
 
         // Close the current game and start a new one
         await payoutAndStartNewGame();
     });
 });
-
-// Helper function to check the users verification status
-async function isUserVerified(userKey: string) {
-    const cursor: ArrayCursor<boolean> = await db.query(/*aql*/`
-        LET user = DOCUMENT('users', @userKey)
-        FILTER ASSERT(user != NULL, '404_USER_NOT_FOUND')
-        RETURN user.verified
-    `, { userKey });
-    return cursor.next();
-}

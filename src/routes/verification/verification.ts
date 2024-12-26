@@ -58,4 +58,30 @@ async function thirdPartyVerificationProcess(userKey: string, idFrontImage: stri
     return true;
 }
 
+/**
+ * @openapi
+ * /verification/status:
+ *   get:
+ *     summary: Get the verification status of the authenticated user
+ *     description: Enables the frontend to decide if the user is allowed to access the game.
+ *     tags: [Verification]
+ *     responses:
+ *       200:
+ *          $ref: '#/components/responses/VerificationStatus'
+ *       default:
+ *          $ref: '#/components/responses/DefaultErrorResponse'
+ */
+router.get('/status', isAuthenticated, async (req: Request, res: Response) => {
+    const userKey = req.session.userKey;
+
+    if (!userKey) {
+        res.status(400).json({ message: 'User ID is required' });
+        return;
+    }
+
+    const verified = await alreadyVerifiedBy(userKey);
+
+    res.status(200).json({ verified });
+});
+
 export default router;

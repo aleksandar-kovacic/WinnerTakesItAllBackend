@@ -261,6 +261,23 @@
           }
         }
       }
+    },
+    "/verification/status": {
+      "get": {
+        "summary": "Get the verification status of the authenticated user",
+        "description": "Enables the frontend to decide if the user is allowed to access the game.",
+        "tags": [
+          "Verification"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/VerificationStatus"
+          },
+          "default": {
+            "$ref": "#/components/responses/DefaultErrorResponse"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -425,6 +442,25 @@
               ],
               "properties": {
                 "loggedIn": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      },
+      "VerificationStatus": {
+        "description": "Verification status",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "verified"
+              ],
+              "properties": {
+                "verified": {
                   "type": "boolean"
                 }
               }
