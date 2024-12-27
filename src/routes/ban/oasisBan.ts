@@ -94,4 +94,30 @@ router.post('/oasis-unban', isAuthenticated, async (req: Request, res: Response)
     res.status(204).send();
 });
 
+/**
+ * @openapi
+ * /ban/status:
+ *   get:
+ *     summary: Get the ban status of a user.
+ *     description: Enables the frontend to decide if the user is banned.
+ *     tags: [Ban]
+ *     responses:
+ *       200:
+ *          $ref: '#/components/responses/BanStatus'
+ *       default:
+ *          $ref: '#/components/responses/DefaultErrorResponse'
+ */
+router.get('/status', isAuthenticated, async (req: Request, res: Response) => {
+    const userKey = req.session.userKey;
+
+    if (!userKey) {
+        res.status(400).json({ message: 'User ID is required' });
+        return;
+    }
+
+    const banned = await isBannedBy(userKey);
+
+    res.status(200).json({ banned });
+});
+
 export default router;

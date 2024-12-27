@@ -76,6 +76,23 @@
         }
       }
     },
+    "/ban/status": {
+      "get": {
+        "summary": "Get the ban status of a user.",
+        "description": "Enables the frontend to decide if the user is banned.",
+        "tags": [
+          "Ban"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/BanStatus"
+          },
+          "default": {
+            "$ref": "#/components/responses/DefaultErrorResponse"
+          }
+        }
+      }
+    },
     "/games/information": {
       "get": {
         "summary": "Get information about the active game.",
@@ -461,6 +478,25 @@
               ],
               "properties": {
                 "verified": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      },
+      "BanStatus": {
+        "description": "Ban status",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "banned"
+              ],
+              "properties": {
+                "banned": {
                   "type": "boolean"
                 }
               }

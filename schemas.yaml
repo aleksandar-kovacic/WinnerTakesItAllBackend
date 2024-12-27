@@ -134,6 +134,19 @@ components:
             properties:
               verified:
                 type: boolean
+    
+    BanStatus:
+      description: Ban status
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - banned
+            properties:
+              banned:
+                type: boolean
       
 
 
