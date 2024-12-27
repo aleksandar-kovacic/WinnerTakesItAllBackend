@@ -101,6 +101,8 @@ router.post('/oasis-unban', isAuthenticated, async (req: Request, res: Response)
  *     summary: Get the ban status of a user.
  *     description: Enables the frontend to decide if the user is banned.
  *     tags: [Ban]
+ *     parameters:
+ *       - $ref: '#/components/parameters/Cookie'
  *     responses:
  *       200:
  *          $ref: '#/components/responses/BanStatus'

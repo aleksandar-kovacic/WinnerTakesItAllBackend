@@ -65,6 +65,8 @@ async function thirdPartyVerificationProcess(userKey: string, idFrontImage: stri
  *     summary: Get the verification status of the authenticated user
  *     description: Enables the frontend to decide if the user is allowed to access the game.
  *     tags: [Verification]
+ *     parameters:
+ *       - $ref: '#/components/parameters/Cookie'
  *     responses:
  *       200:
  *          $ref: '#/components/responses/VerificationStatus'

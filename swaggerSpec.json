@@ -83,6 +83,11 @@
         "tags": [
           "Ban"
         ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Cookie"
+          }
+        ],
         "responses": {
           "200": {
             "$ref": "#/components/responses/BanStatus"
@@ -142,6 +147,28 @@
                 }
               }
             }
+          },
+          "default": {
+            "$ref": "#/components/responses/DefaultErrorResponse"
+          }
+        }
+      }
+    },
+    "/payments/status": {
+      "get": {
+        "summary": "Check the payment status of a authenticated user",
+        "description": "Enables the frontend to decide if the user has already payed.",
+        "tags": [
+          "Payments"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Cookie"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/PaymentStatus"
           },
           "default": {
             "$ref": "#/components/responses/DefaultErrorResponse"
@@ -285,6 +312,11 @@
         "description": "Enables the frontend to decide if the user is allowed to access the game.",
         "tags": [
           "Verification"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Cookie"
+          }
         ],
         "responses": {
           "200": {
@@ -497,6 +529,25 @@
               ],
               "properties": {
                 "banned": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      },
+      "PaymentStatus": {
+        "description": "Payment status",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "paid"
+              ],
+              "properties": {
+                "paid": {
                   "type": "boolean"
                 }
               }

@@ -147,6 +147,19 @@ components:
             properties:
               banned:
                 type: boolean
+    
+    PaymentStatus:
+      description: Payment status
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - paid
+            properties:
+              paid:
+                type: boolean
       
 
 

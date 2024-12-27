@@ -74,4 +74,32 @@ async function thirdPartyPaymentProcess(userKey: string, paymentMethod: string):
     return true;
 }
 
+/**
+ * @openapi
+ * /payments/status:
+ *   get:
+ *     summary: Check the payment status of a authenticated user
+ *     description: Enables the frontend to decide if the user has already payed.
+ *     tags: [Payments]
+ *     parameters:
+ *       - $ref: '#/components/parameters/Cookie'
+ *     responses:
+ *       200:
+ *          $ref: '#/components/responses/PaymentStatus'
+ *       default:
+ *          $ref: '#/components/responses/DefaultErrorResponse'
+ */
+router.get('/status', isAuthenticated, async (req: Request, res: Response) => {
+    const userKey = req.session.userKey;
+
+    if (!userKey) {
+        res.status(400).json({ message: 'User ID is required' });
+        return;
+    }
+
+    const paid = await alreadyPayedBy(userKey);
+
+    res.status(200).json({ paid });
+});
+
 export default router;

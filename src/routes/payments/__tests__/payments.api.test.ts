@@ -43,6 +43,13 @@ describe('test payment functionality', () => {
         .send({ idFrontImage: idFrontImage, personImage: personImage })
         .set('Cookie', responseLogin.headers['set-cookie'][0]);
         expect(verification.status).toBe(204);
+
+        //Check that the users payment status is false
+        const paymentStatus = await request(app)
+            .get('/payments/status')
+            .set('Cookie', responseLogin.headers['set-cookie']);
+        expect(paymentStatus.status).toBe(200);
+        expect(paymentStatus.body).toEqual({ paid: false });
         
         // Let the user pay so that he participates in the game 
         const payment = await request(app)
@@ -50,6 +57,13 @@ describe('test payment functionality', () => {
             .send({ paymentMethod: 'Paypal' })
             .set('Cookie', responseLogin.headers['set-cookie']);
         expect(payment.status).toBe(200);
+
+        //Check that the users payment status is true
+        const paymentStatusAfterPayment = await request(app)
+            .get('/payments/status')
+            .set('Cookie', responseLogin.headers['set-cookie']);
+        expect(paymentStatusAfterPayment.status).toBe(200);
+        expect(paymentStatusAfterPayment.body).toEqual({ paid: true });
         
         // Get the user key from the session cookie and check if the new user is connected to the active game.
         const userKey = await getUserKeyFromSession(responseLogin.headers['set-cookie'][0]);
