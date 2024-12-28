@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "prestart": "ts-node ./src/config/checkEnv.ts",
+    "prebuild": "rm -rf dist",
+    "prestart": "npm run prebuild && ts-node ./src/config/checkEnv.ts",
     "start": "tsc && node ./dist/server.js",
     "build": "tsc",
     "test": "jest -i"
