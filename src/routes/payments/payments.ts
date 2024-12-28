@@ -63,7 +63,7 @@ router.post('/pay', isAuthenticated, async (req: Request, res: Response) => {
     const paymentSuccessful = await thirdPartyPaymentProcess(userKey, paymentMethod);
 
     if (paymentSuccessful) {
-        await addUserToGame(userKey, 1);
+        await addUserToGame(userKey, Number(process.env.TICKET_PRICE));
         res.status(200).json({ message: 'Payment successful and participation recorded' });
     } else {
         res.status(400).json({ message: 'Payment failed' });

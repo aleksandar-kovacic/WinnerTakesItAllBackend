@@ -12,7 +12,8 @@ const requiredEnvVars = [
     'SESSION_SECRET',
     'BOOTSTRAPED_USERS_PASSWORD',
     'GAME_START_DAY',
-    'GAME_START_HOUR'
+    'GAME_START_HOUR',
+    'TICKET_PRICE'
 ];
 
 const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar]);

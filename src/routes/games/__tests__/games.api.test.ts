@@ -57,7 +57,7 @@ describe('Create three users, let them participate in the game and return the ga
     const gameInformation = await request(app)
         .get('/games/information');
     expect(gameInformation.status).toBe(200);
-    expect(gameInformation.body.prizePool).toBe(3);
+    expect(gameInformation.body.prizePool).toBe(3 * Number(process.env.TICKET_PRICE));
     //Check that the endDate is e.g. next Friday 10pm
     const now = new Date();
     const endDate = getEndDateOfGame(now)

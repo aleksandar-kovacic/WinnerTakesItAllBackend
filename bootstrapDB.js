@@ -16,18 +16,18 @@ async function bootstrapDB() {
 }
 
 export async function addGame(startDateOfGame, endDateOfGame) {
+    const prizePool = 3 * Number(process.env.TICKET_PRICE);
     const cursor = await db.query(/*aql*/`
         INSERT {
             isActive: true,
-            prizePool: 3,
+            prizePool: @prizePool,
             startDate: @startDateOfGame,
             endDate: @endDateOfGame,
             dateCreated: DATE_NOW(),
             winner: null,
-            banned: false //TODO: Currently the ban state of a player is handled in the arango database. Replace this query if OASIS or other ban system is implemented.
         } INTO games
         RETURN NEW._key
-    `, {startDateOfGame, endDateOfGame});
+    `, {startDateOfGame, endDateOfGame, prizePool});
     return cursor.next();
 }
 
@@ -37,19 +37,22 @@ export async function addUserToGame() {
             username: "bootstrapUser1",
             email: "bootstrapUser1@mail.com",
             password: process.env.BOOTSTRAPED_USERS_PASSWORD,
-            verified: true
+            verified: true,
+            banned: false
         },
         {
             username: "bootstrapUser2",
             email: "bootstrapUser2@mail.com",
             password: process.env.BOOTSTRAPED_USERS_PASSWORD,
-            verified: true
+            verified: true,
+            banned: false
         },
         {
             username: "bootstrapUser3",
             email: "bootstrapUser3@mail.com",
             password: process.env.BOOTSTRAPED_USERS_PASSWORD,
-            verified: true
+            verified: true,
+            banned: false
         }
     ];
 
@@ -61,14 +64,16 @@ export async function addUserToGame() {
                 username: @username,
                 email: @email,
                 passwordHashed: @passwordHashed,
-                verified: @verified
+                verified: @verified,
+                banned: @banned //TODO: Currently the ban state of a player is handled in the arango database. Replace this query if OASIS or other ban system is implemented.
             } INTO users
             RETURN NEW._key
         `, {
             username: user.username,
             email: user.email,
             passwordHashed: hashedPassword,
-            verified: user.verified
+            verified: user.verified,
+            banned: user.banned
         });
         insertedUsers.push(await cursor.next());
     }
