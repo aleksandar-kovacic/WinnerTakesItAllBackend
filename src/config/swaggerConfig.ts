@@ -15,7 +15,7 @@ const options: Options = {
       { url: `http://localhost:${process.env.BACKEND_PORT}`, description: 'Local server' },
     ],
   },
-  apis: [path.join(__dirname, '../routes/**/*.js')], // Point to your route files (adjust if needed)
+  apis: [path.join(__dirname, '../routes/**/*.js')],
 };
 
 const swaggerSpec: any = swaggerJSDoc(options);
