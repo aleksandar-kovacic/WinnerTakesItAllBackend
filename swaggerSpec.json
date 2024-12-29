@@ -335,15 +335,20 @@
         "type": "object",
         "properties": {
           "username": {
-            "type": "string"
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 30
           },
           "email": {
             "type": "string",
-            "format": "email"
+            "format": "email",
+            "maxLength": 50
           },
           "password": {
             "type": "string",
-            "format": "password"
+            "format": "password",
+            "minLength": 8,
+            "maxLength": 1024
           }
         }
       },
@@ -351,11 +356,15 @@
         "type": "object",
         "properties": {
           "username": {
-            "type": "string"
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 30
           },
           "password": {
             "type": "string",
-            "format": "password"
+            "format": "password",
+            "minLength": 8,
+            "maxLength": 1024
           }
         }
       },
@@ -363,7 +372,8 @@
         "type": "object",
         "properties": {
           "paymentMethod": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 50
           }
         }
       },
@@ -389,7 +399,8 @@
         ],
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 1024
           }
         }
       },
@@ -403,7 +414,8 @@
         "type": "object",
         "properties": {
           "message": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 1024
           }
         }
       }
