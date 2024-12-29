@@ -34,9 +34,19 @@ export async function payOutPrize(winner: string, prizePool: number): Promise<bo
     return true;
 }
 
-// Schedule the job to run e.g. every Friday at 10:00:05 PM. The 5-second delay ensures the job runs after the game has ended.
+let payoutAndStartNewGameJobReference: cron.ScheduledTask;
+
+// Schedule the job to run e.g. every Friday at 10PM.
 export async function payoutAndStartNewGameJob() {
-    cron.schedule(`5 * ${process.env.GAME_START_HOUR} * * ${process.env.GAME_START_DAY}`, payoutAndStartNewGame, {
+    payoutAndStartNewGameJobReference = cron.schedule(
+        `* * ${process.env.GAME_START_HOUR} * * ${process.env.GAME_START_DAY}`,
+        payoutAndStartNewGame, {
         timezone: "Europe/Berlin"
     });
+}
+
+export async function stopPayoutAndStartNewGameJob() {
+    if (payoutAndStartNewGameJobReference) {
+        payoutAndStartNewGameJobReference.stop();
+    }
 }
