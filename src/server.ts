@@ -3,6 +3,7 @@
 import app from './app';
 import debug from 'debug';
 import http from 'http';
+import { payoutAndStartNewGameJob } from './jobs/gameScheduler';
 
 /**
  * Get port from environment and store in Express.
@@ -84,5 +85,10 @@ function onListening(): void {
     : 'port ' + addr?.port;
   debug('Listening on ' + bind);
 }
+
+/**
+ * Start the cron jobs
+ */
+payoutAndStartNewGameJob();
 
 console.log(`✅ Server running on port http://127.0.0.1:${process.env.BACKEND_PORT}`);
