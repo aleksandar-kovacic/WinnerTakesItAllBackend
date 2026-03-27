@@ -1,8 +1,43 @@
+
 # WinnerTakesItAll
 
 WinnerTakesItAll is a lottery web application where users purchase tickets to participate in a game. At the end of each round, a winner is randomly selected from the pool of participants and receives the total sum collected from all ticket sales.
 
 The platform allows users to register, join games, manage their profiles, and engage in a secure and fair gaming environment.
+
+## Demo
+
+Below are screenshots demonstrating the main features and user flow of WinnerTakesItAll:
+
+### Home / Game Page
+
+![Game page](demo-images/homepage.png)
+
+### Login & Register
+
+![Login page](demo-images/login.png)
+
+![Register page](demo-images/register.png)
+
+### Payment & Verification
+
+![Payment method selection](demo-images/payments.png)
+
+![Verification required modal](demo-images/verify-prompt.png)
+
+![Identity verification page](demo-images/verification.png)
+
+### Ban Management
+
+![Ban status page](demo-images/ban.png)
+
+### Settings
+
+![Settings page](demo-images/settings.png)
+
+### In-Game State
+
+![In-game confirmation](demo-images/user-participates.png)
 
 ## Key Features
 
@@ -19,13 +54,15 @@ The platform allows users to register, join games, manage their profiles, and en
 - **Backend**: Node.js/TypeScript server with RESTful API endpoints, using ArangoDB for persistent data and Redis for caching and session management.
 - **APIs**: OpenAPI/Swagger-documented endpoints for all major features.
 
+
 ## User Flow
 
 1. **Register/Login**: Users create an account or log in.
 2. **Verify Identity**: Optionally upload documents for verification.
-3. **Join Games**: Participate in game.
+3. **Join Games**: Participate in a game by purchasing a ticket.
 4. **Payments**: Handle entry fees and receive rewards.
 5. **Ban Status**: Check and manage ban status if applicable.
+
 
 ## Setup Instructions
 
