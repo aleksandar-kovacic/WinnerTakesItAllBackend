@@ -1,55 +1,75 @@
 # WinnerTakesItAll
-WinnerTakesItAll
-
-## Description
-WinnerTakesItAll
 
 ## Prerequisites
-- Node.js (version v23.3.0)
-- npm (version 10.9.0)
-- A running instance of ArangoDB
-- A running instance of Redis
+
+- Node.js (v23.3.0)
+- npm (v10.9.0)
+- ArangoDB (running instance)
+- Redis (running instance)
 
 ## Installation
-1. Clone the repository:
+
+1. **Clone the repository:**
    ```sh
    git clone https://github.com/aleksandar-kovacic/WinnerTakesItAll.git
    cd WinnerTakesItAll
-
-2. Install all packages and dependencies:
    ```
+
+2. **Install dependencies:**
+   ```sh
    npm install
    ```
 
-3. Setup the .env file. A .env.example file is provided in the root directory. Copy it and fill in the required values:
-   ```
-   cp .env.example .env
-   ```
+3. **Configure environment variables:**
+   - Copy the example file and fill in required values:
+     ```sh
+     cp .env.example .env
+     ```
 
-4. Start the server. This also includes compilation of TypeScript to JavaScript files.
-   ```
+4. **Start the server (compiles TypeScript and runs the app):**
+   ```sh
    npm start
    ```
 
-## Bootstrap Database
-Run this command to setup the initial database structure and values. This includes the collections "users" and "games" and the edge collection "users2games". "users" is filled with three initial users (bootstrapUser1, bootstrapUser2 and bootstrapUser3). "games" is filled with the first active game. "users2games" represents the participation of the three users in the game by connecting every user to the game (this represents that every user payed and is now participating in the game).
+## Database Bootstrap
 
-Set the password of the users in the .env file. Make sure that the database you provided in the .env file exists in the ArangoDB instance.
+To initialize the database with default collections and sample data:
 
-Make sure that you compile the TypeScript files to JavaScript files before running the database bootstrap script:
-   ```
+1. **Build the project:**
+   ```sh
    npm run build
-   node node bootstrapDB.js
    ```
+
+2. **Run the bootstrap script:**
+   ```sh
+   node bootstrapDB.js
+   ```
+
+This sets up the `users`, `games`, and `users2games` collections, and inserts initial users and a game. Ensure your .env is configured and the target database exists in ArangoDB.
 
 ## Testing
 
-Run tests:
-   ```
-   npm test
-   ```
+- **Run all tests:**
+  ```sh
+  npm test
+  ```
 
-To run a specific test file:
-   ```
-   npm test users.api.test.js
-   ```
+- **Run a specific test file:**
+  ```sh
+  npm test path/to/testfile.js
+  ```
+
+## Project Structure
+
+- src — Main source code
+  - `routes/` — API endpoints (users, games, payments, verification, ban)
+  - `database/` — ArangoDB and Redis setup
+  - `middleware/` — Authentication and session middleware
+  - `jobs/` — Scheduled jobs (game scheduler)
+  - `config/` — Configuration files (env, swagger)
+- test_utils — Test utilities
+- bootstrapDB.js — Database bootstrap script
+
+## API Documentation
+
+The API is documented using OpenAPI/Swagger. After starting the server, visit `/api-docs` for interactive documentation.
