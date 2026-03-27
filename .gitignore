@@ -1,3 +1,65 @@
+# dependencies
 node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
 dist
-.env
+########################################
+# Node/JS/TS/Next.js Monorepo .gitignore
+########################################
+
+# Node dependencies
+/node_modules/
+**/node_modules/
+/.pnp
+.pnp.*
+/.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# Build outputs
+/dist/
+**/dist/
+/build/
+**/build/
+/out/
+**/out/
+/.next/
+**/.next/
+*.tsbuildinfo
+next-env.d.ts
+
+# Test coverage
+/coverage/
+**/coverage/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+*.log
+
+# Environment files
+.env*
+*.pem
+
+# OS files
+.DS_Store
+
+# Editor/IDE files
+.vscode/
+.idea/
+*.swp
+
+# Vercel
+.vercel/
+
+# Misc
+public/build/

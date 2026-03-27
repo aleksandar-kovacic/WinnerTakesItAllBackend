@@ -1,75 +1,32 @@
-# WinnerTakesItAll Backend
+# WinnerTakesItAll
 
-## Prerequisites
+WinnerTakesItAll is a lottery web application where users purchase tickets to participate in a game. At the end of each round, a winner is randomly selected from the pool of participants and receives the total sum collected from all ticket sales.
 
-- Node.js (v23.3.0)
-- npm (v10.9.0)
-- ArangoDB (running instance)
-- Redis (running instance)
+The platform allows users to register, join games, manage their profiles, and engage in a secure and fair gaming environment.
 
-## Installation
+## Key Features
 
-1. **Clone the repository:**
-   ```sh
-   git clone https://github.com/aleksandar-kovacic/WinnerTakesItAll.git
-   cd WinnerTakesItAll
-   ```
+- **User Registration & Authentication**: Secure sign-up, login, and session management.
+- **Game Participation**: Users can join scheduled games, view game status, and track results.
+- **Ban Management**: Users can view and toggle their ban status, ensuring fair play.
+- **Payments**: Integrated payment system for game entry and rewards.
+- **Identity Verification**: Users can upload documents for identity verification to maintain platform integrity.
+- **Admin & Moderation Tools**: Support for banning users and managing game schedules.
 
-2. **Install dependencies:**
-   ```sh
-   npm install
-   ```
+## High-Level Architecture
 
-3. **Configure environment variables:**
-   - Copy the example file and fill in required values:
-     ```sh
-     cp .env.example .env
-     ```
+- **Frontend**: Built with Next.js and React, styled using Tailwind CSS and Material UI. Provides a responsive and interactive user interface.
+- **Backend**: Node.js/TypeScript server with RESTful API endpoints, using ArangoDB for persistent data and Redis for caching and session management.
+- **APIs**: OpenAPI/Swagger-documented endpoints for all major features.
 
-4. **Start the server (compiles TypeScript and runs the app):**
-   ```sh
-   npm start
-   ```
+## User Flow
 
-## Database Bootstrap
+1. **Register/Login**: Users create an account or log in.
+2. **Verify Identity**: Optionally upload documents for verification.
+3. **Join Games**: Participate in game.
+4. **Payments**: Handle entry fees and receive rewards.
+5. **Ban Status**: Check and manage ban status if applicable.
 
-To initialize the database with default collections and sample data:
+## Setup Instructions
 
-1. **Build the project:**
-   ```sh
-   npm run build
-   ```
-
-2. **Run the bootstrap script:**
-   ```sh
-   node bootstrapDB.js
-   ```
-
-This sets up the `users`, `games`, and `users2games` collections, and inserts initial users and a game. Ensure your .env is configured and the target database exists in ArangoDB.
-
-## Testing
-
-- **Run all tests:**
-  ```sh
-  npm test
-  ```
-
-- **Run a specific test file:**
-  ```sh
-  npm test path/to/testfile.js
-  ```
-
-## Project Structure
-
-- src — Main source code
-  - `routes/` — API endpoints (users, games, payments, verification, ban)
-  - `database/` — ArangoDB and Redis setup
-  - `middleware/` — Authentication and session middleware
-  - `jobs/` — Scheduled jobs (game scheduler)
-  - `config/` — Configuration files (env, swagger)
-- test_utils — Test utilities
-- bootstrapDB.js — Database bootstrap script
-
-## API Documentation
-
-The API is documented using OpenAPI/Swagger. After starting the server, visit `/api-docs` for interactive documentation.
+For setup instructions, see the README files in the `frontend/` and `backend/` directories.
